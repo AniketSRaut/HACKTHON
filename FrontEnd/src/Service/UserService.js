@@ -15,17 +15,13 @@ export async function loginAPI(email, password) {
 }
 
 
-export async function registerAPI(fName, lName, salary, email, password) {
+export async function registerAPI(fullName, email, password, phoneNo) {
 
     const body = {
-        fName,
-        lName,
-        salary,
-        email,
-        password
+        fullName, email, password, phoneNo
     }
 
-    const response = await axios.post(`${config.url}/user/addUser`, body)
+    const response = await axios.post(`${config.url}/user/registerUser`, body)
 
     return response.data
 }

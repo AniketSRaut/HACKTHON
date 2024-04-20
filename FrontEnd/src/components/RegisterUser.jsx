@@ -6,24 +6,26 @@ import { registerAPI } from '../Service/UserService'
 
 function RegisterUser() {
 
-    const [fName, setfName] = useState([])
-    
-    
+    const [fullName, setfName] = useState([])
     const [email, setEmail] = useState([])
     const [password, setPassword] = useState([])
+    const [confirmPassword, setConfirmPassword] = useState([])
     const [phoneNo, setPhoneNo] = useState([])
 
     const navigate = useNavigate()
 
     const loginCheck = async () => {
 
-        if (fName.length == 0 || email.length == 0 ||password.length == 0 ||phoneNo.length == 0 ) {
+        if (fullName.length == 0 || email.length == 0 ||password.length == 0 ||phoneNo.length == 0 ) {
             toast.warning('All fields are mandatory')
-        }else {
+        }else if(password != confirmPassword){
+            toast.warning("Enter correct Password")
+        }
+        else {
 
 
-            console.log(fName ,email , password, phoneNo);
-            const op = await registerAPI(fName ,email , password, phoneNo)
+            console.log(fullName ,email , password, phoneNo);
+            const op = await registerAPI(fullName ,email , password, phoneNo)
             
             if (op[`status`] == 'success') {
                 onCancel()
@@ -86,7 +88,15 @@ const onCancel=()=>{
                             </div>
 
                         </div>
+                        <div className="mt-5 col">
+                                <label >Phone Number : </label>
+                                <input onChange={(e) => {
+                                    setPhoneNo(e.target.value)
 
+                                }}
+
+                                    type="tel" className="form-control" />
+                            </div>
 
                        
                             <div className='mt-5 col'>
@@ -97,15 +107,17 @@ const onCancel=()=>{
                                 }}
                                     type="password" className="form-control " />
                             </div>
-                            <div className="mt-5 col">
-                                <label >Phone Number : </label>
+
+                            <div className='mt-5 col'>
+                                <label >Confirm Password : </label>
                                 <input onChange={(e) => {
-                                    setPhoneNo(e.target.value)
+                                    setConfirmPassword(e.target.value)
 
                                 }}
-
-                                    type="password" className="form-control" />
+                                    type="password" className="form-control " />
                             </div>
+
+                   
 
                        
 
