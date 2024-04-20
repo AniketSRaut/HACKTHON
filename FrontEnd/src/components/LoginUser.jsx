@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { loginAPI } from '../Service/UserService'
+import { useDispatch } from 'react-redux'
+import { loginAction } from '../features/userSlice'
 
  function LoginUser() {
 
@@ -9,6 +11,8 @@ import { loginAPI } from '../Service/UserService'
     const [password,setPassword] = useState([])
 
     const navigate = useNavigate()
+
+    const dispatch = useDispatch()
 
     const loginCheck = async()=>{
 
@@ -23,10 +27,17 @@ import { loginAPI } from '../Service/UserService'
            const op = await loginAPI(email,password)
 
            if(op[`status`]=='success'){
-           navigate('/getAll')
+
+            const{loginId,loginName}=result['data']
+            
+            sessionStorage.setItem('loginId', loginId)
+            sessionStorage.setItem('loginName', loginName)
+
+            dispatch(loginAction())
+           navigate('/')
             toast.success("User Login successfully...")
            }else{
-            toast.error(op[`error`])
+            toast.error(op[`Invalid user or password`])
 
            }
 
