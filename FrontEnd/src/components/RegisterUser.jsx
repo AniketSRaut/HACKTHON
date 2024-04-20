@@ -7,25 +7,23 @@ import { registerAPI } from '../Service/UserService'
 function RegisterUser() {
 
     const [fName, setfName] = useState([])
-    const [lName, setlName] = useState([])
-    const [salary, setsalary] = useState([])
+    
+    
     const [email, setEmail] = useState([])
     const [password, setPassword] = useState([])
-    const [ConfirmPassword, setConfirmPassword] = useState([])
+    const [phoneNo, setPhoneNo] = useState([])
 
     const navigate = useNavigate()
 
     const loginCheck = async () => {
 
-        if (fName.length == 0 || lName.length == 0 ||salary.length == 0 ||email.length == 0 ||password.length == 0 ||ConfirmPassword.length == 0 ) {
+        if (fName.length == 0 || email.length == 0 ||password.length == 0 ||phoneNo.length == 0 ) {
             toast.warning('All fields are mandatory')
-        } else if (password != ConfirmPassword) {
-            toast.warning('Password & ConfirmPassword should be same')
-        } else {
+        }else {
 
 
-            console.log(fName , lName , salary , email , password);
-            const op = await registerAPI(fName , lName , salary , email , password)
+            console.log(fName ,email , password, phoneNo);
+            const op = await registerAPI(fName ,email , password, phoneNo)
             
             if (op[`status`] == 'success') {
                 onCancel()
@@ -64,34 +62,19 @@ const onCancel=()=>{
 
                         <div className="row">
                             <div className='mt-5 col'>
-                                <label >First Name : </label>
+                                <label >Full Name: </label>
                                 <input onChange={(e) => {
                                     setfName(e.target.value)
 
                                 }}
-                                    type="email" className="form-control " />
+                                    type="text" className="form-control " />
                             </div>
-                            <div className="mt-5 col">
-                                <label >Last NAME : </label>
-                                <input onChange={(e) => {
-                                    setlName(e.target.value)
-
-                                }}
-
-                                    type="password" className="form-control"/>
-                            </div>
+                            
 
                         </div>
 
                         <div className="row">
-                            <div className='mt-5 col'>
-                                <label >Salary : </label>
-                                <input onChange={(e) => {
-                                    setsalary(e.target.value)
-
-                                }}
-                                    type="email" className="form-control " />
-                            </div>
+                          
                             <div className="mt-5 col">
                                 <label >Email : </label>
                                 <input onChange={(e) => {
@@ -99,7 +82,7 @@ const onCancel=()=>{
 
                                 }}
 
-                                    type="password" className="form-control" />
+                                    type="email" className="form-control" />
                             </div>
 
                         </div>
@@ -112,12 +95,12 @@ const onCancel=()=>{
                                     setPassword(e.target.value)
 
                                 }}
-                                    type="email" className="form-control " />
+                                    type="password" className="form-control " />
                             </div>
                             <div className="mt-5 col">
-                                <label >Confirm Password : </label>
+                                <label >Phone Number : </label>
                                 <input onChange={(e) => {
-                                    setConfirmPassword(e.target.value)
+                                    setPhoneNo(e.target.value)
 
                                 }}
 

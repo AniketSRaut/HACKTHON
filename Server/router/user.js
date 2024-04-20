@@ -52,13 +52,13 @@ router.post("/login", (request, response) => {
 
 
 router.post('/addUser',(req,res)=>{
-    const statement = `insert into user  (fName , lName , salary , email , password) values (?,?,?,?,?); `
+    const statement = `insert into user  (fName ,email , password, phoneNo) values (?,?,?,?); `
 
-    const {fName , lName , salary , email , password}= req.body
+    const {fName ,email , password, phoneNo}= req.body
 
     const pass = String(crypto.SHA224(password))
 
-    db.pool.execute(statement,[fName , lName , salary , email , pass],(error,data)=>{
+    db.pool.execute(statement,[fName ,email , password, phoneNo],(error,data)=>{
 
         if(error){
             res.send(utils.createErrorResult(error))
