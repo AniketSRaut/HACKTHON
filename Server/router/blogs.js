@@ -41,16 +41,16 @@ router.post('/findBlog',(req,res)=>{
 
 
 
-router.post('/myBlog/:id',(req,res)=>{
+router.post('/myBlog/',(req,res)=>{
 
-    // const {loginId} = req.body
+    const {loginId} = req.body
     // console.log("id is ",searchKey)
     const statement = `select user.userId, blogId , blogs.title blogTitle , 
     categories.title categoryTitle, blogs.createdTime ,user.fullName from blogs , 
     categories , user where user.userId = blogs.userId and blogs.categoryId = categories.categoryId 
     AND blogs.isDelete = 0 AND user.userId = ? ;`
 
-    db.pool.query(statement,[loginId],(error,result)=>{
+    db.pool.execute(statement,[loginId],(error,result)=>{
         if(error){
             res.send(utils.createErrorResult(error))
         }else{
