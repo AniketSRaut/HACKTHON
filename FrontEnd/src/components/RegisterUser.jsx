@@ -46,7 +46,7 @@ function RegisterUser() {
 
 
 const onCancel=()=>{
-    navigate('/login')
+    navigate('/userLogin')
 }
 
 

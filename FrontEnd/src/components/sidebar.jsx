@@ -8,7 +8,7 @@ function Sidebar(){
 
     const onLogout = () => {
         // clear the session storage
-        sessionStorage.removeItem('logiId')
+        sessionStorage.removeItem('loginId')
         sessionStorage.removeItem('loginName')
     
         // set the login status to false
@@ -54,3 +54,5 @@ function Sidebar(){
     </div>
     )
 }
+
+export default Sidebar

@@ -9,7 +9,7 @@ export async function loginAPI(email, password) {
         password,
     }
 
-    const response = await axios.post(`${config.url}/user/login`, body)
+    const response = await axios.post(`${config.url}/user/userLogin`, body)
 
     return response.data
 }

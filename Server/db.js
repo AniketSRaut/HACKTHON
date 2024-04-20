@@ -4,7 +4,7 @@ const pool = mysql.createPool({
 
     host: 'localhost',
     user: 'root',
-    password: 'manager',
+    password: 'deva0007',
     port: 3306,
     database: 'hackathon',
     waitForConnections: true,
