@@ -8,8 +8,10 @@ app.use(express.json())
 
 const userRouter = require('./router/user')
 const pRouter = require('./router/product')
+const blogRouter = require('./router/blogs')
 
 app.use('/user',userRouter)
+app.use('/blogs',blogRouter)
 app.use('/product',pRouter)
 
 

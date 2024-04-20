@@ -17,9 +17,6 @@ router.get("/getAllUser", (req, res) => {
 
 
 
-
-
-
 router.post("/userLogin", (request, response) => {
   const statement = `select userId , fullName from user where email = ? and password = ?;`;
 
@@ -39,23 +36,13 @@ router.post("/userLogin", (request, response) => {
       response.send(utils.createErrorResult("User does not exit"));
 
       }else{
-
-
-
-
             const userData={
               loginId : result[0].userId,
               loginName : result[0].fullName,
             }
+          response.send(utils.createSuccessResult(userData));
 
-  
-          response.send(utils.createSuccessResult(result[0]));
-  
         }
-
-      
-
-     
     }
   });
 });

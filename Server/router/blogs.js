@@ -1,14 +1,34 @@
 const express = require('express') 
-
-
 const router = express.Router();
 
 const db = require('../db')
 const utils = require('../utils')
 
-router.get('/getAllActive',(req,res)=>{
+router.get('/getAllBlogs',(req,res)=>{
 
-    const statement = `select * from product where isDelete = 0;`
+
+    const statement = `select user.userId userId ,blogId , blogs.title blogTitle , categories.title categoryTitle, 
+    blogs.createdTime ,user.fullName from blogs , categories , user where user.userId = blogs.userId and 
+    blogs.categoryId = categories.categoryId and blogs.isDelete= 0 ;`
+
+    db.pool.query(statement,(error,result)=>{
+        if(error){
+            res.send(utils.createErrorResult(error))
+        }else{
+            res.send(utils.createSuccessResult(result))
+        }
+    })
+})
+
+
+router.post('/findBlog',(req,res)=>{
+
+    const {searchKey} = req.body
+    console.log("id is ",searchKey)
+    const statement = `select user.userId, blogId , blogs.title blogTitle , 
+    categories.title categoryTitle, blogs.createdTime ,user.fullName from blogs , 
+    categories , user where user.userId = blogs.userId and blogs.categoryId = categories.categoryId 
+    AND blogs.isDelete = 0 AND (blogs.title LIKE '%${searchKey}%' OR categories.title like '%${searchKey}%');`
 
     db.pool.query(statement,(error,result)=>{
         if(error){
@@ -20,11 +40,17 @@ router.get('/getAllActive',(req,res)=>{
 })
 
 
-router.get('/getAll',(req,res)=>{
 
-    const statement = `select * from product;`
+router.post('/myBlog/:id',(req,res)=>{
 
-    db.pool.query(statement,(error,result)=>{
+    // const {loginId} = req.body
+    // console.log("id is ",searchKey)
+    const statement = `select user.userId, blogId , blogs.title blogTitle , 
+    categories.title categoryTitle, blogs.createdTime ,user.fullName from blogs , 
+    categories , user where user.userId = blogs.userId and blogs.categoryId = categories.categoryId 
+    AND blogs.isDelete = 0 AND user.userId = ? ;`
+
+    db.pool.query(statement,[loginId],(error,result)=>{
         if(error){
             res.send(utils.createErrorResult(error))
         }else{
@@ -32,6 +58,33 @@ router.get('/getAll',(req,res)=>{
         }
     })
 })
+
+
+router.post('/newBlog',(req,res)=>{
+
+    const {title , contents , userId , categoryId } = req.body
+    // console.log("id is ",searchKey)
+    const statement = `insert into blogs ( title , contents , userId , categoryId )
+     values (?,?,?,?);`
+    db.pool.query(statement,[title , contents , userId , categoryId],(error,result)=>{
+        if(error){
+            res.send(utils.createErrorResult(error))
+        }else{
+
+            res.send(utils.createSuccessResult("Blog added successfully......"))
+
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,7 +118,6 @@ router.post('/addProduct',(req,res)=>{
 
 
 router.put('/update/:id',(req,res)=>{
-    
     const {id}= req.params
 
     const{proName , proPrice}= req.body
@@ -83,7 +135,6 @@ router.put('/update/:id',(req,res)=>{
 
 
 router.delete('/delete/:id',(req,res)=>{
-
     const {id}= req.params
 
     const{proName , proPrice}= req.body
