@@ -79,66 +79,49 @@ router.post('/newBlog',(req,res)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-router.get('/getById/:id',(req,res)=>{
+router.get('/getBlogById/:id',(req,res)=>{
     const {id}= req.params
-    const statement = `select * from product where id =?;`
+
+    const statement = `select blogId, blogs.title blogTitle , categories.title categoriesTitle ,  contents from blogs , 
+    categories where blogs.categoryId = categories.categoryId and blogs.blogId = ? ; `
 
     db.pool.query(statement,[id],(error,result)=>{
         if(error){
             res.send(utils.createErrorResult(error))
         }else{
-            res.send(utils.createSuccessResult(result))
+            const data = result[0] 
+            res.send(utils.createSuccessResult(data))
         }
     })
 })
 
-router.post('/addProduct',(req,res)=>{
-    // const {id}= req.params
 
-    const{proName , proPrice}= req.body
-    const statement = `insert into product (proName , proPrice) values (?,?);`
+router.put('/editBlog/:id',(req,res)=>{
+    const {id}= req.params
 
-    db.pool.execute(statement,[proName , proPrice],(error,result)=>{
+    const { title , contents , userId , categoryId } =req.body
+
+    // insert into blogs ( title , contents , userId , categoryId )
+
+    // const{proName , proPrice}= req.body
+    const statement = `update blogs set title = ? , contents = ?,
+     userId = ?, categoryId = ? where blogId = ?;`
+
+    db.pool.execute(statement,[title , contents , userId , categoryId , id],(error,result)=>{
         if(error){
             res.send(utils.createErrorResult(error))
         }else{
-            res.send(utils.createSuccessResult(" Product Added Successfully ... "))
-        }
-    })
-})
-
-
-router.put('/update/:id',(req,res)=>{
-    const {id}= req.params
-
-    const{proName , proPrice}= req.body
-    const statement = `update product set proName= ?, proPrice = ? where id = ?;`
-
-    db.pool.execute(statement,[proName , proPrice ,id],(error,result)=>{
-        if(error){
-            res.send(utils.createErrorResult(error))
-        }else{
-            res.send(utils.createSuccessResult(" Updated Successfully ... "))
+            res.send(utils.createSuccessResult(" Updated Blog  Successfully ... "))
         }
     })
 })
 
 
 
-router.delete('/delete/:id',(req,res)=>{
+router.put('/deleteBlog/:id',(req,res)=>{
     const {id}= req.params
 
-    const{proName , proPrice}= req.body
-    const statement = `update product set isDelete = 1 where id = ?;`
+    const statement = `update blogs set isDelete = 1 where blogId = ?;`
 
     db.pool.execute(statement,[id],(error,result)=>{
         if(error){
@@ -148,5 +131,13 @@ router.delete('/delete/:id',(req,res)=>{
         }
     })
 })
+
+
+
+
+
+
+
+
 
 module.exports = router
